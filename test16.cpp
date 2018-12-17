@@ -11,9 +11,14 @@ int main(){
 	cin >> W >> n;
 	
 	int * tab = new int[n];
+	int * weights = new int[n];
     for (int i = 0; i < n; i++) 
 	{
     cin >> tab[i];
+    }
+    for (int i = 0; i < n; i++) 
+	{
+    cin >> weights[i];
     }
     
     long long ** prize = new long long *[n+1];
@@ -35,19 +40,21 @@ int main(){
 	{
 		for( j = 1; j < W+1; j++)
 		{
-			if( (j-tab[i-1]) >= 0 && prize[i-1][j] < (prize[i-1][j-tab[i-1]] + tab[i-1]) )
+			if( (j-weights[i-1]) >= 0 && prize[i-1][j] < (prize[i-1][j-weights[i-1]] + tab[i-1]) )
 			{
-				prize[i][j] = prize[i-1][j-tab[i-1]] + tab[i-1];
+				prize[i][j] = prize[i-1][j-weights[i-1]] + tab[i-1];
 			}
 			else
 			{
 				prize[i][j] = prize[i-1][j];
 			}
+			
 		}
+		cout << endl;
 	}
-	for( i = 1; i < n+1; i++)
+	for( i = 0; i < n+1; i++)
 	{
-		for(j = 1; j < W+1; j++)
+		for(j = 0; j < W+1; j++)
 		{
 			cout << prize[i][j] << " ";
 		}
