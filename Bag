@@ -1,0 +1,134 @@
+#include <iostream>
+#include <vector>
+#include <iostream>
+
+using namespace std;
+
+template<class V>
+class Bag {
+public:
+    Bag(vector<V> names){
+
+        for(int i = 0; i < names.size(); i++)
+        {
+            bool isNew = true;
+            for(int j = 0; j < numbers.size(); j++)
+            {
+
+                if(names[i] == this->currentNames[j])
+                {
+
+                    isNew = false;
+                    numbers[j]++;
+                    break;
+                }
+            }
+            if(isNew)
+            {
+                if(names[i] != "")
+                {
+                    this->currentNames.push_back(names[i]);
+                    numbers.push_back(1);
+                }
+
+            }
+
+        }
+    }
+
+    ~Bag(){
+
+    }
+
+    void add(const V&v)
+    {
+        for(int i = 0; i < currentNames.size(); i++)
+        {
+            if(v == this->currentNames[i])
+            {
+                numbers[i]++;
+                break;
+            }
+            else
+            {
+                this->currentNames.push_back(v);
+                numbers.push_back(1);
+                break;
+            }
+        }
+    }
+
+    void usun(const V&v)
+    {
+        for(int i = 0; i < currentNames.size(); i++)
+        {
+            if(v == currentNames[i])
+            {
+                if(numbers[i] > 1)
+                {
+                    numbers[i]--;
+                }
+                else
+                {
+                    currentNames.erase(currentNames.begin()+i);
+                    numbers.erase(numbers.begin()+i);
+                }
+            }
+        }
+    }
+
+    int get(const V&v)
+    {
+        for(int i = 0; i < currentNames.size(); i++)
+        {
+            if(v == currentNames[i])
+            {
+                return numbers[i];
+            }
+        }
+    }
+
+    void unia (const Bag<V>&a, const Bag<V>&b, Bag<V>&c)
+    {
+        for(int i = 0; i < a.currentNames.size(); i++)
+        {
+            c.currentNames.push_back(a.currentNames[i]);
+            c.numbers.push_back(a.numbers[i]);
+        }
+
+
+        for(int i = 0; i < b.currentNames.size(); i++)
+        {
+            bool isNew = true;
+            for(int j = 0; j < c.currentNames.size(); j++)
+            {
+                if(b.currentNames[i] == c.currentNames[j])
+                {
+                    c.numbers[j] += b.numbers[i];
+                    isNew = false;
+                    break;
+                }
+            }
+
+            if(isNew)
+            {
+                c.currentNames.push_back(b.currentNames[i]);
+                c.numbers.push_back(b.numbers[i]);
+            }
+        }
+
+    }
+
+    void Print()
+    {
+        for(int i = 0; i < currentNames.size(); i++)
+        {
+            cout << currentNames[i] << " " << numbers[i] << endl;
+        }
+    }
+
+
+private:
+    vector<V> currentNames;
+    vector<int> numbers;
+};
