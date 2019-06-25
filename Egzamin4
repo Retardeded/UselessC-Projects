@@ -1,0 +1,45 @@
+#include <cstdio>
+
+class A {
+public:
+    virtual void f(){
+        printf("A.f \n");
+    }
+    A() {f();}
+    ~A(){
+        printf("~A.f \n");
+    }
+};
+
+class B : public A
+{
+public:
+    A a;
+    void f(){
+        printf("~B.f \n");
+    }
+    B(int k =0){
+        if(k < 0) throw 0;
+    }
+    ~B() {
+        f();
+    }
+};
+
+
+int main(){
+    try{
+        A *ptr = new B(-1);
+        delete ptr;
+    }
+    catch (...)
+    {
+        printf("Exc \n");
+    }
+}
+
+A.f 
+A.f 
+~A.f 
+~A.f 
+Exc 
