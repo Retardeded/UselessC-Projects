@@ -1,0 +1,44 @@
+#include <cstdio>
+
+class A {
+public:
+    virtual void f(){
+        printf("A.f \n");
+    }
+    A() {f();}
+    ~A(){
+        printf("~A.f \n");
+    }
+};
+
+class B : public A
+{
+public:
+    A*a;
+    void f(){
+        printf("B.f \n");
+    }
+    B(A*a=0){
+        f();
+        this->a = a;
+    }
+    ~B() {
+        printf("~B.f \n");
+        if(a) delete a;
+    }
+};
+
+
+
+int main(){
+    A*a = new B(new A());
+    printf("M \n");
+    delete a;
+}
+
+
+A.f 
+A.f 
+B.f 
+M 
+~A.f 
