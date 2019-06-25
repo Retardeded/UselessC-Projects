@@ -1,0 +1,47 @@
+#include <iostream>
+#include <vector>
+#include<cmath>
+
+using namespace std;
+
+int main(){
+  int m,n;
+
+  cin>>m;
+  cin>>n;
+
+
+  vector<vector<double>>v;
+
+  double value;
+
+    double longest = 0;
+    int index = 0;
+
+for(int i=0;i<m;i++){
+  vector<double>row;
+  for(int j=0;j<n;j++){
+    cin>>value;
+    row.push_back(value);
+  }
+  v.push_back(row);
+}
+
+ for (int i=0; i<m;i++){
+     double sum = 0;
+    for (int j=0;j<n;j++) {
+        sum += v[i][j]*v[i][j];
+    }
+    sum = pow(sum,0.5);
+    if(sum > longest)
+    {
+        longest = sum;
+        index = i;
+    }
+}
+ for(int i = 0; i < n; i++)
+ {
+     cout << v[index][i] << " ";
+ }
+
+}
