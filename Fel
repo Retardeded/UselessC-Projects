@@ -1,0 +1,120 @@
+#include <cstdlib>
+#include <iostream>
+#include <set>
+#include <string>
+#include <cstring>
+#include <sstream>
+#include <algorithm>
+#include <list>
+#include <iostream>
+
+using namespace std;
+
+class Word {
+public:
+    Word(string text, string lang)
+    {
+        this->text = text;
+        this->lang = lang;
+    }
+    string text, lang;
+};
+
+bool operator < (const Word & w1, const Word & w2) {
+    return w1.text != w2.text ? w1.text < w2.text : w1.lang < w2.lang;
+}
+
+class Meaning {
+public:
+    Meaning(Word* first, Word* second)
+    {
+        this->first = first;
+        this->second = second;
+    }
+    Word * first, * second;
+};
+
+bool operator < (const Meaning & m1, const Meaning & m2) {
+    return min(*m1.first, *m1.second) < min(*m2.first, *m2.second);
+}
+
+class Dict {
+    set<Word> words;
+    set<Meaning> meanings;
+
+    bool sameLang(Word* word, string lang)
+    {
+        return word->lang == lang;
+    }
+    Word * addWord(const char * t, const char * l) {
+        Word word = {t, l};
+        if (words.find(word) == words.end()) {
+            words.insert(word);
+        }
+        auto it = words.find(word);
+        return (Word *) &(*it);
+    }
+
+    void addMeaning(const char * t1, const char * l1, const char * t2, const char * l2) {
+        Word * w1 = addWord(t1, l1), * w2 = addWord(t2, l2);
+        meanings.insert( Meaning(w1, w2) );
+    }
+
+    void removeWord(const char * t, const char * l)
+    {
+        Word word = {t, l};
+        while(true)
+        {
+            std::set<Meaning>::iterator it =
+                    std::find_if(meanings.begin(), meanings.end(), [word](Meaning tmp)->bool{return *tmp.first == word || *tmp.second == word; });
+            if(it != meanings.end())
+                meanings.erase(it);
+            else
+                break;
+
+        }
+        words.erase(word);
+    }
+    list<string> getAllWordsInLang(string lang)
+    {
+        list<string> list;
+        while(true)
+        {
+            std::set<Word>::iterator it =
+                    std::find_if(words.begin(), words.end(), [lang](Word tmp)->bool{return tmp.lang == lang; });
+            if(it != words.end())
+                list.insert(list.begin(), it->lang);
+            else
+                break;
+
+        }
+        return list;
+    }
+    list<Word> getAllMeanings(const char * t, const char * l)
+    {
+        Word word = {t, l};
+        list<Word> list;
+        while(true)
+        {
+            std::set<Meaning>::iterator it =
+                    std::find_if(meanings.begin(), meanings.end(), [word](Meaning tmp)->bool{return *tmp.first == word || *tmp.second == word; });
+            if(it != meanings.end())
+            {
+                if(it->first == word)
+                    list.insert(list.begin(), it->second);
+                else
+                    list.insert(list.begin(), it->first);
+            }
+
+            else
+                break;
+
+        }
+        return list;
+    }
+};
+
+int main() {
+    cout << "dupa\n";
+}
+
